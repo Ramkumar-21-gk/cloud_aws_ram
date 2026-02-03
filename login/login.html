@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cloud Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Manrope:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #1f2432;
+        --muted: #6b6f7a;
+        --accent: #e55a2b;
+        --accent-dark: #c04722;
+        --card: #ffffff;
+        --shadow: 0 30px 60px rgba(31, 36, 50, 0.18);
+        --ring: rgba(229, 90, 43, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: "Manrope", system-ui, -apple-system, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, #fff5ed 0%, transparent 45%),
+          radial-gradient(circle at 80% 20%, #f7f1ff 0%, transparent 50%),
+          linear-gradient(135deg, #f7f7f9 0%, #efeef6 55%, #f7f1ff 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+
+      .shell {
+        width: min(980px, 100%);
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 28px;
+        align-items: stretch;
+      }
+
+      .panel {
+        border-radius: 28px;
+        padding: 42px;
+        box-shadow: var(--shadow);
+      }
+
+      .panel.brand {
+        background: linear-gradient(160deg, #1f2432 0%, #2b3555 55%, #1b2031 100%);
+        color: #fef7f2;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .brand::before {
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(229, 90, 43, 0.6) 0%, transparent 70%);
+        top: -80px;
+        right: -50px;
+      }
+
+      .brand::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0%, transparent 70%);
+        bottom: -90px;
+        left: -40px;
+      }
+
+      .brand h1 {
+        font-family: "Fraunces", "Times New Roman", serif;
+        font-size: clamp(2rem, 3vw, 2.6rem);
+        margin-bottom: 14px;
+      }
+
+      .brand p {
+        color: rgba(255, 247, 242, 0.75);
+        line-height: 1.6;
+        margin-bottom: 26px;
+        max-width: 320px;
+      }
+
+      .brand ul {
+        list-style: none;
+        display: grid;
+        gap: 14px;
+      }
+
+      .brand li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.98rem;
+      }
+
+      .badge {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.12);
+        display: grid;
+        place-items: center;
+        font-weight: 600;
+        color: #fff7f2;
+      }
+
+      .panel.form {
+        background: var(--card);
+      }
+
+      .form h2 {
+        font-family: "Fraunces", "Times New Roman", serif;
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .form p {
+        color: var(--muted);
+        margin-bottom: 28px;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      label {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      input {
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 1px solid #e0e2e8;
+        font-size: 1rem;
+        transition: border 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px var(--ring);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 18px 0 26px;
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
+
+      .actions a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .actions a:hover {
+        color: var(--accent-dark);
+      }
+
+      .checkbox {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      button {
+        width: 100%;
+        border: none;
+        border-radius: 16px;
+        padding: 14px 18px;
+        font-size: 1rem;
+        font-weight: 600;
+        background: var(--accent);
+        color: #fffdfb;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        box-shadow: 0 16px 24px rgba(229, 90, 43, 0.28);
+      }
+
+      button:hover {
+        background: var(--accent-dark);
+        transform: translateY(-1px);
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #9aa0ac;
+        margin: 26px 0 18px;
+        font-size: 0.85rem;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: #e4e6eb;
+      }
+
+      .alt-actions {
+        display: grid;
+        gap: 12px;
+      }
+
+      .ghost {
+        background: #f5f2f0;
+        color: var(--ink);
+        box-shadow: none;
+        border: 1px solid #ece1d9;
+      }
+
+      .ghost:hover {
+        background: #f0e9e2;
+      }
+
+      .footnote {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.88rem;
+        color: var(--muted);
+      }
+
+      .footnote a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      @media (max-width: 860px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .panel {
+          padding: 32px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="panel brand">
+        <h1>Welcome back to CloudDesk</h1>
+        <p>
+          Manage your infrastructure, monitor usage, and ship faster with a
+          workspace built for calm, focused teams.
+        </p>
+        <ul>
+          <li>
+            <span class="badge">01</span>
+            Consolidated dashboards in minutes.
+          </li>
+          <li>
+            <span class="badge">02</span>
+            Secure by design with role control.
+          </li>
+          <li>
+            <span class="badge">03</span>
+            Alerts that actually reduce noise.
+          </li>
+        </ul>
+      </section>
+
+      <section class="panel form">
+        <h2>Sign in</h2>
+        <p>Use your team credentials to access your cloud workspace.</p>
+        <form>
+          <div class="field">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@company.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <div class="actions">
+            <label class="checkbox">
+              <input type="checkbox" name="remember" />
+              Remember me
+            </label>
+            <a href="#">Forgot password?</a>
+          </div>
+          <button type="submit">Continue to dashboard</button>
+          <div class="divider">or</div>
+          <div class="alt-actions">
+            <button class="ghost" type="button">Sign in with Google</button>
+            <button class="ghost" type="button">Sign in with SSO</button>
+          </div>
+          <p class="footnote">
+            New here? <a href="#">Create an account</a>
+          </p>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
